@@ -98,8 +98,8 @@ def fitness(indi):
         
     return ackley_function(indi) * penalidade #Função de fitness!
         
-def selection(pop_ori, pop_crossed, new_pop):
-    
+def selection(pop_ori, pop_crossed):
+    new_pop = np.zeros(shape=(POPULACAO_TOTAL , N), dtype=float)
     size = 0
 
     while size < POPULACAO_TOTAL:
@@ -113,24 +113,26 @@ def selection(pop_ori, pop_crossed, new_pop):
         new_pop[size] = chosen
 
         size += 1     
+    return new_pop
 
 def main():
     pop = start(POPULACAO_TOTAL)
-    int_pop = mutate(pop) #No caso a gente nn precisa mais de VIJ, PODEMOS SUBSTITUIR POR UIJ
-    int_pop = (cross(pop, int_pop))
     
     geracoes = 200
 
     new_pop = np.zeros(shape=(POPULACAO_TOTAL , N), dtype=float)
-
+    # CORREÇÃO: Mutação e cruzamento precisam acontecer DENTRO do loop das gerações
     for i in range(geracoes):
-        selection(pop, int_pop, new_pop)
+        print(i)
+        pop_mut = mutate(pop) 
+        pop_cross = cross(pop, pop_mut)
+        pop = selection(pop, pop_cross) # Atualiza a população base para a próxima rodada
+    
+    array_sorted = sorted(pop, key=fitness)
 
-    array_sorted = sorted(new_pop, key=fitness)
-
+    print("Melhor indivíduo:")
     print(array_sorted[0])
-
-    print(f"Esse é o valor: {fitness(array_sorted[0])}")
+    print(f"\nEsse é o valor: {fitness(array_sorted[0])}")
 
 if __name__ == "__main__":
     main()
