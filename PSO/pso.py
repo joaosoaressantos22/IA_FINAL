@@ -54,7 +54,7 @@ def main():
                     g_best = np.copy(pop[j]) # Salva uma cópia congelada!
                     fit_best = fit_atual
             else:
-                if fitness_vals[j] < fit_atual:
+                if fitness_vals[j] < fit_atual: 
                     p_bests[j] = np.copy(pop[j]) # Salva uma cópia congelada!
                     fitness_vals[j] = fit_atual 
 
