@@ -3,15 +3,15 @@ import matplotlib.pyplot as plt
 
 class Ga:
     def __init__(self, fitness_func, inf_limit, sup_limit, pop_size, genes, MUT_FACTOR=0.2, CROSS_FACTOR=0.7, custo=True, GERACOES = 300, Int_alg=False):
-        
         if not Int_alg:
             self.pop = np.random.uniform(low=inf_limit, high=sup_limit, size=(pop_size, genes))
         else:
             self.pop = np.random.randint(sup_limit, size=(pop_size, genes))
         #EIXOS DO GRAFICO
+        self.fit = fitness_func
         self.fitness_por_geracao = np.zeros(shape=GERACOES, dtype=float)
         self.geracoes = np.linspace(start=1, stop=GERACOES, num=GERACOES, dtype=int)
-
+        print(self.pop)
         for _ in range(GERACOES):
             print(_)
             if not Int_alg:
@@ -83,24 +83,18 @@ class Ga:
                     j = np.random.randint(0, genes)
                     if not cross_m:
                         continue
-                    if not Int_alg:
+
+                    if Int_alg:
                         self.pop[i][j] = np.random.randint(inf_limit, sup_limit)
                         continue
 
                     self.pop[i][j] = np.random.uniform(inf_limit, sup_limit)
-            #Aqui pegamos o melhor da geração!
             fitness_arr = np.array([fitness_func(ind) for ind in self.pop])
             melhor_idx = np.argmin(fitness_arr)
             self.fitness_por_geracao[_] = fitness_arr[melhor_idx]
 
     def best(self):
-        self.best = self.pop[0]
-
-        for i in range(self.pop_size):
-            if self.fitness(self.pop[i]) < self.fitness(self.best):
-                self.best = self.pop[i]
-
-        return self.best                
+        return sorted(self.pop, key=self.fit)[0]          
 
     def plot(self):
         fig, ax = plt.subplots()

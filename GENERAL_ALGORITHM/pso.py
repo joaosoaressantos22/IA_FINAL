@@ -10,7 +10,7 @@ class Pso:
 
     def __init__(self, fitness_func, inf_limit, sup_limit, pop_size, genes, GERACOES=500, custo=True):
         self.pop  = np.random.uniform(low=inf_limit, high=sup_limit, size=(pop_size,genes))
-
+        self.pop_size = pop_size
         self.vel = np.random.uniform(low=-1.0, high=+1.0, size=(pop_size,genes))
         p_bests = np.array([x for x in self.pop])
         fitness_vals = np.array([fitness_func(x) for x in self.pop])
